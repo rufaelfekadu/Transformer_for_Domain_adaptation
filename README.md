@@ -3,8 +3,8 @@
 ## Introduction
 This repo containes the implementation of a crossdomain transformer architecture adopted from [CDTrans](https://github.com/CDTrans/CDTrans.git) for domain adaptation in Urban Road Scene Perception
 ```latex
-\input{plots_and_tables/tables.tex}
-```
+\input{./plots _and_tables/tables.tex}
+
 ## Results
 #### Table 1 [UDA results on Office-31]
 
@@ -52,65 +52,55 @@ DATASETDIR
     │   │   ├── bicycle
     │   │   ├── car
     │   │   └── person
-    │   ├── test_wconf_wdomain_weights.txt
-    │   └── validation_wconf_wdomain_weights.txt
-    └── mscoco
-        ├── train
-        │   ├── bicycle
-        │   ├── car
-        │   └── person
-        └── val
-            ├── bicycle
-            ├── car
-            └── person
+    ├── mscoco
+    |    ├── train
+    |    │   ├── bicycle
+    |    │   ├── car
+    |    │   └── person
+    |    └── val
+    |        ├── bicycle
+    |        ├── car
+    |        └── person
+	├── flir_train.txt
+	├── flir_val.txt
+	├── mscoco_train.txt
+	└── mscoco_val.txt
 ```
 ### Prepare DeiT-trained Models
 For fair comparison in the pre-training data set, we use the DeiT parameter init our model based on ViT. 
-You need to download the ImageNet pretrained transformer model : [DeiT-Small](https://dl.fbaipublicfiles.com/deit/deit_small_distilled_patch16_224-649709d9.pth), [DeiT-Base](https://dl.fbaipublicfiles.com/deit/deit_base_distilled_patch16_224-df68dfff.pth) and move them to the `./data/pretrainModel` directory.
+You need to download the ImageNet pretrained transformer model : [DeiT-Small](https://dl.fbaipublicfiles.com/deit/deit_small_distilled_patch16_224-649709d9.pth), [DeiT-Base](https://dl.fbaipublicfiles.com/deit/deit_base_distilled_patch16_224-df68dfff.pth), [cvt](https://1drv.ms/u/s!AhIXJn_J-blW9RzF3rMW7SsLHa8h?e=blQ0Al), [swin_small](https://github.com/SwinTransformer/storage/releases/download/v1.0.8/swin_small_patch4_window7_224_22k.pth), [swin_base](https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224_22k.pth) and move them to the `./data/pretrainModel` directory.
 
 ## Training
-We utilize 1 GPU for pre-training and 2 GPUs for UDA, each with 16G of memory.
+We utilize 1 GPU for both pre-training and UDA stages.
+Before running the scripts make sure to update the data directories in the scripts/[pretrain/uda].sh files as follows
+```
+DATASETS.ROOT_TRAIN_DIR '/path/to/mscoco_train.txt' 
+DATASETS.ROOT_TRAIN_DIR2 '/path/to/flir_train.txt' 
+DATASETS.ROOT_TEST_DIR '/path/to/flir_val.txt'
+```
 
 # Scripts.
 Command input paradigm
 
-`bash scripts/[pretrain/uda]/[office31/officehome/visda/domainnet]/run_*.sh [deit_base/deit_small]`
+`bash scripts/run_[pretrain/uda].sh [deit_base/deit_small/cvt/swin_small/swin_base] run`
+
 ## For example
-DeiT-Base scripts
+To run DeiT-Base
 ```bash
 
-# Office-31     Source: Amazon   ->  Target: Dslr, Webcam
-bash scripts/pretrain/office31/run_office_amazon.sh deit_base
-bash scripts/uda/office31/run_office_amazon.sh deit_base
+bash scripts/run_pretrain.sh deit_base run_1
+bash scripts/run_uda.sh deit_base run_1
 
-#Office-Home    Source: Art      ->  Target: Clipart, Product, Real_World
-bash scripts/pretrain/officehome/run_officehome_Ar.sh deit_base
-bash scripts/uda/officehome/run_officehome_Ar.sh deit_base
-
-# VisDA-2017    Source: train    ->  Target: validation
-bash scripts/pretrain/visda/run_visda.sh deit_base
-bash scripts/uda/visda/run_visda.sh deit_base
-
-# DomainNet     Source: Clipart  ->  Target: painting, quickdraw, real, sketch, infograph
-bash scripts/pretrain/domainnet/run_domainnet_clp.sh deit_base
-bash scripts/uda/domainnet/run_domainnet_clp.sh deit_base
-```
-DeiT-Small scripts
-Replace deit_base with deit_small to run DeiT-Small results. An example of training on office-31 is as follows:
-```bash
-# Office-31     Source: Amazon   ->  Target: Dslr, Webcam
-bash scripts/pretrain/office31/run_office_amazon.sh deit_small
-bash scripts/uda/office31/run_office_amazon.sh deit_small
-```
 
 ## Evaluation
 ```bash
-# For example VisDA-2017
-python test.py --config_file 'configs/uda.yml' MODEL.DEVICE_ID "('0')" TEST.WEIGHT "('../logs/uda/vit_base/visda/transformer_best_model.pth')" DATASETS.NAMES 'VisDA' DATASETS.NAMES2 'VisDA' OUTPUT_DIR '../logs/uda/vit_base/visda/' DATASETS.ROOT_TRAIN_DIR './data/visda/train/train_image_list.txt' DATASETS.ROOT_TRAIN_DIR2 './data/visda/train/train_image_list.txt' DATASETS.ROOT_TEST_DIR './data/visda/validation/valid_image_list.txt'  
+
+python test.py --config_file 'configs/uda.yml' MODEL.DEVICE_ID "('0')" TEST.WEIGHT "('../logs/uda/deit_base/run_1/transformer_best_model.pth')" DATASETS.NAMES 'cocoflir' DATASETS.NAMES2 'cocoflir' OUTPUT_DIR '../logs/uda/deit_base/test/' DATASETS.ROOT_TRAIN_DIR '/path/to/mscoco_train.txt' DATASETS.ROOT_TRAIN_DIR2 '/path/to/flir_train.txt' DATASETS.ROOT_TEST_DIR '/path/to/flir_val.txt'  
 ```
+The output logs will be saved at ../logs/[pretrain/uda]/[deit_base/deit_small/cvt/swin_small/swin_base]/run
 
 ## Acknowledgement
 
-Codebase from [TransReID](https://github.com/damo-cv/TransReID)
+Codebase from [CDTrans](https://github.com/CDTrans/CDTrans.git)
 
 
