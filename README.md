@@ -2,9 +2,9 @@
 
 ## Introduction
 This repo containes the implementation of a crossdomain transformer architecture adopted from [CDTrans](https://github.com/CDTrans/CDTrans.git) for domain adaptation in Urban Road Scene Perception
-```latex
-\input{./plots _and_tables/tables.tex}
-```
+
+## Results
+#### Table 1 Accuracy values for the model trained on the Source domain and tested on the target domain(Source only), model trained and evaluated on the target domain(Target only) and UDA. The UDA per-class accuracy is also shown.
 <table>
     <tr>
         <td>Method Name</td>
@@ -14,10 +14,6 @@ This repo containes the implementation of a crossdomain transformer architecture
         <td>Car</td>
         <td>Person</td>
         <td>UDA</td>
-    </tr>
-    <tr>
-        <td>%</td>
-        <td>ISO numeric Code</td>
     </tr>
     <tr>
         <td>DeiT-small</td>
@@ -56,11 +52,6 @@ This repo containes the implementation of a crossdomain transformer architecture
         <td>94.90</td>
     </tr>
     <tr>
-        <td>% CvT-small</td>
-        <td>78.4</td>
-        <td>90.9</td>
-    </tr>
-    <tr>
         <td>CvT-small</td>
         <td>92.80</td>
         <td>95.70</td>
@@ -78,26 +69,14 @@ This repo containes the implementation of a crossdomain transformer architecture
         <td>92.03</td>
         <td>91.20</td>
     </tr>
-    <tr>
-        <td>% Resnet-100</td>
-        <td>AD</td>
-        <td>AND</td>
-        <td>020</td>
-    </tr>
-    <tr>
-        <td>% T2T-ViT</td>
-        <td>AO</td>
-        <td>AGO</td>
-        <td>024</td>
-    </tr>
+</table>
+
+#### Table 2 [Accuracy values with and without the pseudolabelling technique]
+<table>
     <tr>
         <td>Method Name</td>
         <td>Without 2-way center aware labelling</td>
         <td>With 2-way center aware labelling</td>
-    </tr>
-    <tr>
-        <td>%</td>
-        <td>ISO numeric Code</td>
     </tr>
     <tr>
         <td>DeiT-small</td>
@@ -114,31 +93,13 @@ This repo containes the implementation of a crossdomain transformer architecture
         <td>93.6</td>
         <td>95.5</td>
     </tr>
-    <tr>
-        <td>\multirow{2}{*}{\textbf{Mapping}}</td>
-        <td>\multicolumn{3}{c|}{\textbf{Match Right Rate}}</td>
-        <td>\multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Pseudo Labal</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>\textbf{\begin{tabular}[c]{@{}c@{}}Bicycle\end{tabular}}</td>
-        <td>\textbf{\begin{tabular}[c]{@{}c@{}}Car\end{tabular}}</td>
-        <td>\textbf{\begin{tabular}[c]{@{}c@{}}Person\end{tabular}}</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>\multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}}Source (100\%) to</td>
-    </tr>
-    <tr>
-        <td>\multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}}Target (89\%) to</td>
-    </tr>
+</table>
+
+#### Table 3 [Accuracy values with and without the discriminator added to the network for DeiT-small.]
+<table>
     <tr>
         <td>Method Name</td>
         <td>Accuracy</td>
-    </tr>
-    <tr>
-        <td>%</td>
-        <td>ISO numeric Code</td>
     </tr>
     <tr>
         <td>CDTrans</td>
@@ -148,32 +109,7 @@ This repo containes the implementation of a crossdomain transformer architecture
         <td>CDTrans + discriminator</td>
         <td>94.1</td>
     </tr>
-    <tr>
-        <td>Method Name</td>
-        <td>Accuracy</td>
-    </tr>
-    <tr>
-        <td>%</td>
-        <td>ISO numeric Code</td>
-    </tr>
-    <tr>
-        <td>Distillation Loss between Source and Target</td>
-        <td>93.6</td>
-    </tr>
-    <tr>
-        <td>Distillation Loss between Source-Target and Target</td>
-        <td>95.9</td>
-    </tr>
 </table>
-## Results
-#### Table 1 [UDA results on Office-31]
-
-
-#### Table 2 [UDA results on Office-Home]
-
-
-#### Table 3 [UDA results on VisDA-2017]
-
 
 #### Table 4 [UDA results on DomainNet]
 

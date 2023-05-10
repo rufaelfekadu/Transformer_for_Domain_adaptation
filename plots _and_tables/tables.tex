@@ -6,21 +6,15 @@
     \caption{Accuracy values for the model trained on the Source domain and tested on the target domain(Source only), model trained and evaluated on the target domain(Target only) and UDA. The UDA per-class accuracy is also shown.}
     \centering
    \begin{tabular}{ p{2cm}|p{2cm}|p{2cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}}
-     % \hline
-     % \multicolumn{4}{|c|}{Country List} \\
      \hline
      Method Name & Source Only & Target Only & Bicycle & Car & Person & UDA\\
-     % &ISO numeric Code\\
      \hline
      DeiT-small & 94.20 & 97.50 & 73.00 & \textbf{98.00} & 95.00 & 95.90\\
      DeiT-base & \textbf{94.80} & 97.60 & 77.00 & 97.00 & 97.00 & \textbf{96.40}\\
      SWIN-small & 93.90 & 94.9 & 71.00 & 95.00 & 93.00 & 94.10\\
      SWIN-base & 94.00 & 96.70 & 72.00 & 95.00 & 94.00& 94.90\\
-     % CvT-small&   78.4 & 90.9\\
      CvT-small & 92.80 & 95.70 & 73.00 & 96.00 & 96.00 & 95.50\\
      SGADA \cite{sgada2021}  & 80.10 & 94.24 & 87.13 & 94.44 & 92.03 & 91.20\\
-    % Resnet-100& AD  & AND   &020\\
-     % T2T-ViT& AO  & AGO&024\\
      \hline
     \end{tabular}
 
@@ -30,11 +24,8 @@
 \begin{table}[!h]
     \centering
    \begin{tabular}{ p{7cm}|p{3cm}|p{3cm}}
-     % \hline
-     % \multicolumn{4}{|c|}{Country List} \\
      \hline
      Method Name & Without 2-way center aware labelling & With 2-way center aware labelling\\
-     % &ISO numeric Code\\
      \hline
      DeiT-small & 94.4 & 95.9 \\
      DeiT-base & 96.1 & 96.4\\
@@ -62,11 +53,8 @@
 \begin{table}[!h]
     \centering
    \begin{tabular}{ p{7cm}|p{3cm}}
-     % \hline
-     % \multicolumn{4}{|c|}{Country List} \\
      \hline
      Method Name &  Accuracy\\
-     % &ISO numeric Code\\
      \hline
      CDTrans & 95.9\\
      CDTrans + discriminator &  94.1 \\
@@ -81,11 +69,8 @@
 \begin{table}[!h] 
     \centering
    \begin{tabular}{ p{7cm}|p{3cm}}
-     % \hline
-     % \multicolumn{4}{|c|}{Country List} \\
      \hline
      Method Name &  Accuracy\\
-     % &ISO numeric Code\\
      \hline
      Distillation Loss between Source and Target & 93.6\\
      Distillation Loss between Source-Target and Target & 95.9\\
