@@ -35,7 +35,7 @@ else
     in_planes=384
 fi
 
-python test.py --config_file configs/uda.yml MODEL.DEVICE_ID $gpus \
+python train.py --config_file configs/uda.yml MODEL.DEVICE_ID $gpus \
 OUTPUT_DIR '../logs/uda/'$model'/'$run \
 DATASETS.ROOT_TRAIN_DIR '../dataset/sgada_data/mscoco_train.txt' \
 DATASETS.ROOT_TRAIN_DIR2 '../dataset/sgada_data/flir_train.txt' \

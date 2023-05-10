@@ -29,7 +29,6 @@ from tqdm import tqdm
 from scipy.optimize import linear_sum_assignment
 from collections  import defaultdict
 import pandas as pd
-import wandb
 from sklearn.metrics import f1_score
 
 def obtain_label(logger, val_loader, model, distance='cosine', threshold=0):
@@ -344,19 +343,6 @@ def do_train_uda(cfg,
     acc_2_meter = AverageMeter()
     acc_2_pse_meter = AverageMeter()
 
-    # start a new wandb run to track this script
-    wandb.init(
-        # set the wandb project where this run will be logged
-        project="CDTrans",
-        name = cfg.MODEL.Transformer_TYPE,
-        # track hyperparameters and run metadata
-        config={
-        "learning_rate": cfg.SOLVER.BASE_LR,
-        "architecture": cfg.MODEL.Transformer_TYPE,
-        "dataset": "Coco-flir",
-        "epochs": cfg.SOLVER.MAX_EPOCHS,
-        }
-    )
 
     #discriminator
     if cfg.MODEL.USE_DISC:
@@ -524,7 +510,7 @@ def do_train_uda(cfg,
             acc_meter.update(acc, 1)
             acc_2_meter.update(acc2, 1)
             acc_2_pse_meter.update(acc2_pse, 1)
-            wandb.log({"loss1": loss1_meter.avg, "loss2": loss2_meter.avg, "loss3": loss3_meter.avg, "acc": acc_meter.avg, "acc2": acc_2_meter.avg, "acc2_pse": acc_2_pse_meter.avg})
+            # wandb.log({"loss1": loss1_meter.avg, "loss2": loss2_meter.avg, "loss3": loss3_meter.avg, "acc": acc_meter.avg, "acc2": acc_2_meter.avg, "acc2_pse": acc_2_pse_meter.avg})
             if cfg.MODEL.USE_DISC: 
                 acc_d_meter.update(acc_d, img.shape[0])
 
@@ -594,7 +580,7 @@ def do_train_uda(cfg,
                            os.path.join(cfg.OUTPUT_DIR, cfg.MODEL.NAME + '_best_model.pth'))
                 logger.info("Classify Domain Adapatation Validation Results - Epoch: {}".format(epoch))
                 logger.info("Accuracy: {:.1%}, best Accuracy: {:.1%}, min Mean_entropy: {:.1}".format(accuracy, best_model_mAP, min_mean_ent))
-                wandb.log({"accuracy": accuracy, "best_accuracy": best_model_mAP, "min_mean_entropy": min_mean_ent})
+                # wandb.log({"accuracy": accuracy, "best_accuracy": best_model_mAP, "min_mean_entropy": min_mean_ent})
                 torch.cuda.empty_cache()
             else:
                 model.eval()

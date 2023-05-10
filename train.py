@@ -12,7 +12,6 @@ import numpy as np
 import os
 import argparse
 from datasets import build_dataset
-import wandb
 # from timm.scheduler import create_scheduler
 
 from config import cfg
@@ -100,7 +99,6 @@ if __name__ == '__main__':
     loss_func, center_criterion = make_loss(cfg, num_classes=num_classes)
     optimizer, optimizer_center = make_optimizer(cfg, model, center_criterion)
     scheduler = create_scheduler(cfg, optimizer)
-    wandb.login(key='8cdd2c1ba9c2013cd07e928c8a0667126b9167b7')
     if cfg.MODEL.UDA_STAGE == 'UDA':
         do_train_uda(
         cfg,
