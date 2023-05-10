@@ -4,7 +4,167 @@
 This repo containes the implementation of a crossdomain transformer architecture adopted from [CDTrans](https://github.com/CDTrans/CDTrans.git) for domain adaptation in Urban Road Scene Perception
 ```latex
 \input{./plots _and_tables/tables.tex}
-
+```
+<table>
+    <tr>
+        <td>Method Name</td>
+        <td>Source Only</td>
+        <td>Target Only</td>
+        <td>Bicycle</td>
+        <td>Car</td>
+        <td>Person</td>
+        <td>UDA</td>
+    </tr>
+    <tr>
+        <td>%</td>
+        <td>ISO numeric Code</td>
+    </tr>
+    <tr>
+        <td>DeiT-small</td>
+        <td>94.20</td>
+        <td>97.50</td>
+        <td>73.00</td>
+        <td>extbf{98.00}</td>
+        <td>95.00</td>
+        <td>95.90</td>
+    </tr>
+    <tr>
+        <td>DeiT-base</td>
+        <td>\textbf{94.80}</td>
+        <td>97.60</td>
+        <td>77.00</td>
+        <td>97.00</td>
+        <td>97.00</td>
+        <td>\textbf{96.40}</td>
+    </tr>
+    <tr>
+        <td>SWIN-small</td>
+        <td>93.90</td>
+        <td>94.9</td>
+        <td>71.00</td>
+        <td>95.00</td>
+        <td>93.00</td>
+        <td>94.10</td>
+    </tr>
+    <tr>
+        <td>SWIN-base</td>
+        <td>94.00</td>
+        <td>96.70</td>
+        <td>72.00</td>
+        <td>95.00</td>
+        <td>94.00</td>
+        <td>94.90</td>
+    </tr>
+    <tr>
+        <td>% CvT-small</td>
+        <td>78.4</td>
+        <td>90.9</td>
+    </tr>
+    <tr>
+        <td>CvT-small</td>
+        <td>92.80</td>
+        <td>95.70</td>
+        <td>73.00</td>
+        <td>96.00</td>
+        <td>96.00</td>
+        <td>95.50</td>
+    </tr>
+    <tr>
+        <td>SGADA \cite{sgada2021}</td>
+        <td>80.10</td>
+        <td>94.24</td>
+        <td>87.13</td>
+        <td>94.44</td>
+        <td>92.03</td>
+        <td>91.20</td>
+    </tr>
+    <tr>
+        <td>% Resnet-100</td>
+        <td>AD</td>
+        <td>AND</td>
+        <td>020</td>
+    </tr>
+    <tr>
+        <td>% T2T-ViT</td>
+        <td>AO</td>
+        <td>AGO</td>
+        <td>024</td>
+    </tr>
+    <tr>
+        <td>Method Name</td>
+        <td>Without 2-way center aware labelling</td>
+        <td>With 2-way center aware labelling</td>
+    </tr>
+    <tr>
+        <td>%</td>
+        <td>ISO numeric Code</td>
+    </tr>
+    <tr>
+        <td>DeiT-small</td>
+        <td>94.4</td>
+        <td>95.9</td>
+    </tr>
+    <tr>
+        <td>DeiT-base</td>
+        <td>96.1</td>
+        <td>96.4</td>
+    </tr>
+    <tr>
+        <td>CvT</td>
+        <td>93.6</td>
+        <td>95.5</td>
+    </tr>
+    <tr>
+        <td>\multirow{2}{*}{\textbf{Mapping}}</td>
+        <td>\multicolumn{3}{c|}{\textbf{Match Right Rate}}</td>
+        <td>\multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Pseudo Labal</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>\textbf{\begin{tabular}[c]{@{}c@{}}Bicycle\end{tabular}}</td>
+        <td>\textbf{\begin{tabular}[c]{@{}c@{}}Car\end{tabular}}</td>
+        <td>\textbf{\begin{tabular}[c]{@{}c@{}}Person\end{tabular}}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>\multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}}Source (100\%) to</td>
+    </tr>
+    <tr>
+        <td>\multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}}Target (89\%) to</td>
+    </tr>
+    <tr>
+        <td>Method Name</td>
+        <td>Accuracy</td>
+    </tr>
+    <tr>
+        <td>%</td>
+        <td>ISO numeric Code</td>
+    </tr>
+    <tr>
+        <td>CDTrans</td>
+        <td>95.9</td>
+    </tr>
+    <tr>
+        <td>CDTrans + discriminator</td>
+        <td>94.1</td>
+    </tr>
+    <tr>
+        <td>Method Name</td>
+        <td>Accuracy</td>
+    </tr>
+    <tr>
+        <td>%</td>
+        <td>ISO numeric Code</td>
+    </tr>
+    <tr>
+        <td>Distillation Loss between Source and Target</td>
+        <td>93.6</td>
+    </tr>
+    <tr>
+        <td>Distillation Loss between Source-Target and Target</td>
+        <td>95.9</td>
+    </tr>
+</table>
 ## Results
 #### Table 1 [UDA results on Office-31]
 
