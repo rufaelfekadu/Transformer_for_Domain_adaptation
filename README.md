@@ -111,7 +111,7 @@ This repo containes the implementation of a crossdomain transformer architecture
     </tr>
 </table>
 
-#### Table 4 [UDA results on DomainNet]
+Trained model models can be found here [ModelZoo](https://mbzuaiac.sharepoint.com/:f:/s/AI702_group7/Eh2v0jwRrltBh6D-XMNL0yMBLFnLLtxdrAfQ_yqLLiTp4Q?e=HbXFDA)
 
 ## Requirements
 ### Installation
@@ -191,7 +191,7 @@ bash scripts/run_uda.sh deit_base run_1
 ## Evaluation
 ```bash
 
-python test.py --config_file 'configs/uda.yml' MODEL.DEVICE_ID "('0')" TEST.WEIGHT "('../logs/uda/deit_base/run_1/transformer_best_model.pth')" DATASETS.NAMES 'cocoflir' DATASETS.NAMES2 'cocoflir' OUTPUT_DIR '../logs/uda/deit_base/test/' DATASETS.ROOT_TRAIN_DIR '/path/to/mscoco_train.txt' DATASETS.ROOT_TRAIN_DIR2 '/path/to/flir_train.txt' DATASETS.ROOT_TEST_DIR '/path/to/flir_val.txt'  
+python test.py --config_file 'configs/uda.yml' MODEL.DEVICE_ID "('0')" TEST.WEIGHT "('/path/to/trained/weight.pth')" DATASETS.NAMES 'cocoflir' DATASETS.NAMES2 'cocoflir' OUTPUT_DIR '../logs/uda/deit_base/test/' DATASETS.ROOT_TRAIN_DIR '/path/to/mscoco_train.txt' DATASETS.ROOT_TRAIN_DIR2 '/path/to/flir_train.txt' DATASETS.ROOT_TEST_DIR '/path/to/flir_val.txt'  
 ```
 The output logs will be saved at ../logs/[pretrain/uda]/[deit_base/deit_small/cvt/swin_small/swin_base]/run
 
