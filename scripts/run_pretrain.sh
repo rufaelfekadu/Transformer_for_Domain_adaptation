@@ -36,10 +36,10 @@ else
     gpus="('0')"
 fi
 
-python test.py --config_file configs/pretrain.yml MODEL.DEVICE_ID $gpus \
+python train.py --config_file configs/pretrain.yml MODEL.DEVICE_ID $gpus \
 OUTPUT_DIR '../logs/pretrain/'$model'/'$run \
-DATASETS.ROOT_TRAIN_DIR '../dataset/sgada_data/flir_train.txt' \
-DATASETS.ROOT_TRAIN_DIR2 '../dataset/sgada_data/flir_train.txt' \
+DATASETS.ROOT_TRAIN_DIR '../dataset/sgada_data/mscoco_train.txt' \
+DATASETS.ROOT_TRAIN_DIR2 '../dataset/sgada_data/mscoco_train.txt' \
 DATASETS.ROOT_TEST_DIR '../dataset/sgada_data/flir_val.txt' \
 DATASETS.NAMES "cocoflir" DATASETS.NAMES2 "cocoflir" \
 MODEL.Transformer_TYPE $model_type \
