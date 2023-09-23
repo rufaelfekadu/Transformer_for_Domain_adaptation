@@ -31,6 +31,8 @@ from collections  import defaultdict
 import pandas as pd
 from sklearn.metrics import f1_score
 
+from model import Discriminator
+
 def obtain_label(logger, val_loader, model, distance='cosine', threshold=0):
     device = "cuda"
     start_test = True
@@ -101,6 +103,7 @@ def obtain_label(logger, val_loader, model, distance='cosine', threshold=0):
 
 def update_feat(cfg, epoch, model, train_loader1,train_loader2, device,feat_memory1,feat_memory2, label_memory1,label_memory2):
     model.eval()
+    class_outs = torch.zeros((label_memory2.shape))
     for n_iter, (img, vid, _, _, idx) in enumerate(tqdm(train_loader1)):
         with torch.no_grad():
             img = img.to(device)
@@ -116,6 +119,9 @@ def update_feat(cfg, epoch, model, train_loader1,train_loader2, device,feat_memo
             feat = feats[1]/(torch.norm(feats[1],2,1,True)+1e-8)
             feat_memory2[idx] = feat.detach().cpu()
             label_memory2[idx] = vid
+        
+    #Get mask from class confidences and filter target dataset
+    validtarget = 
 
     # pd.DataFrame(torch.stack(feat_memory1, feat_memory2)).to_csv('../logs/feature_mscoco_flir_swin.csv')
 
@@ -286,21 +292,6 @@ def generate_new_dataset(cfg, logger, label_memory2, s_dataset, knnidx, target_k
 
     return train_loader
 
-class Discriminator(nn.Module):
-    def __init__(self, in_dim, h=500):
-        super(Discriminator, self).__init__()
-        self.l1 = nn.Linear(in_dim, h)
-        self.l2 = nn.Linear(h, h)
-        self.l3 = nn.Linear(h, 2)
-        self.l4 = nn.LogSoftmax(dim=1)
-        self.slope = 0.25
-
-    def forward(self, x):
-        x = F.leaky_relu(self.l1(x), self.slope)
-        x = F.leaky_relu(self.l2(x), self.slope)
-        x = self.l3(x)
-        x = self.l4(x)
-        return x
     
 def do_train_uda(cfg,
              model,

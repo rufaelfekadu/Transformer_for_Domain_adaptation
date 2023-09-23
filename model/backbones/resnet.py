@@ -9,6 +9,21 @@ def conv3x3(in_planes, out_planes, stride=1):
     return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
                      padding=1, bias=False)
 
+class Discriminator(nn.Module):
+    def __init__(self, in_dim, h=500):
+        super(Discriminator, self).__init__()
+        self.l1 = nn.Linear(in_dim, h)
+        self.l2 = nn.Linear(h, h)
+        self.l3 = nn.Linear(h, 2)
+        self.l4 = nn.LogSoftmax(dim=1)
+        self.slope = 0.25
+
+    def forward(self, x):
+        x = F.leaky_relu(self.l1(x), self.slope)
+        x = F.leaky_relu(self.l2(x), self.slope)
+        x = self.l3(x)
+        x = self.l4(x)
+        return x
 
 class BasicBlock(nn.Module):
     expansion = 1
