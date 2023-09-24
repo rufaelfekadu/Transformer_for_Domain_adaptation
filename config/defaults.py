@@ -123,6 +123,7 @@ _C.DATASETS.NAMES2 = ('market1501')
 _C.DATASETS.ROOT_TRAIN_DIR = ('../data')
 _C.DATASETS.ROOT_TRAIN_DIR2 = ('../data')
 _C.DATASETS.ROOT_TEST_DIR = ('../data')
+_C.DATASETS.ROOT_TEST_DIR2 = ('../data')
 _C.DATASETS.PLUS_NUM_ID = 100
 _C.DATASETS.QUERY_MINING = False
 # -----------------------------------------------------------------------------
