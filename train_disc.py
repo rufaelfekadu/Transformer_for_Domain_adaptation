@@ -143,7 +143,10 @@ def main():
 
     #load model
     # model = make_model(cfg, num_class=2, camera_num=0, view_num = 0)
-    model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet50', pretrained=True)
+    model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet50', pretrained=False)
+
+    # repalce last layer of the model
+    model.fc = torch.nn.Linear(2048, 2)
     model = model.to(device)
 
     #load optimizer
