@@ -2,6 +2,6 @@ DATASETS:
   NAMES: ('OURAPI')
   ROOT_TRAIN_DIR: ('./dataset/sgada_data/mscoco/train/')
   NAMES2: ('OURAPI')
-  ROOT_TRAIN_DIR2: ('./dataset/sgada_data/flir/train/)
+  ROOT_TRAIN_DIR2: ('./dataset/sgada_data/flir/train/')
   ROOT_TEST_DIR: ('./dataset/sgada_data/mscoco/val/')
   ROOT_TEST_DIR2: ('./dataset/sgada_data/flir/val/')

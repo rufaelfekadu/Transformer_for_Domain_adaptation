@@ -51,6 +51,7 @@ def train(model, source_loader, taget_loader, optimizer, criterion, device, epoc
         train_epoch(model, source_loader, taget_loader, optimizer, criterion, device, epoch, print_freq=print_freq)
         loss, pred = validate(model, source_loader, taget_loader, criterion, device)
         print(f'Epoch: [{epoch}]\t Validation Loss {loss:.4f}\t validation Accuracy {pred:.4f}\t')
+
 def validate(model, source_loader, taget_loader, criterion, device):
     model.eval()
     losses = AverageMeter()
@@ -83,9 +84,6 @@ def validate(model, source_loader, taget_loader, criterion, device):
 
             loss = criterion(total_pred_conf, total_label)
             losses.update(loss.item(), source_data.size(0))
-
-
-
 
     return losses.avg, accuracy.avg
 
@@ -121,7 +119,7 @@ def infer_target(model, target_loader, device, split='train'):
     
 def main():
     #update cfg
-    cfg.merge_from_file('configs/train_disc.yml')
+    cfg.merge_from_file('/home/rufael.marew/Documents/Academics/AI702/project/Transformers_for_Domain_adaptation/configs/train_disc.yaml')
     #set device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -170,3 +168,7 @@ def main():
     #run infernce on target dataset
     infer_target(model, target_train_loader, device, split='train')
     infer_target(model, target_test_loader, device, split='test')
+
+if __name__ == '__main__':
+
+    main()
