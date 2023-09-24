@@ -123,25 +123,18 @@ def main():
     #set device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+    train_transforms = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
 
-    source_train_dataset = CustomImageDataset(root=cfg.DATASETS.ROOT_TRAIN_DIR, transform=transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-    ]))
-    source_test_dataset = CustomImageDataset(root=cfg.DATASETS.ROOT_TEST_DIR, transform=transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-    ]))
-    target_train_dataset = CustomImageDataset(root=cfg.DATASETS.ROOT_TRAIN_DIR2, transform=transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-    ]))
-    target_test_dataset = CustomImageDataset(root=cfg.DATASETS.ROOT_TEST_DIR2, transform=transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-    ]))
-    # source_loader = DataLoader(source_dataset, batch_size=64, shuffle=True, num_workers=4, pin_memory=True)
-    # target_loader = DataLoader(target_dataset, batch_size=64, shuffle=True, num_workers=4, pin_memory=True)
+    source_train_dataset = CustomImageDataset(root=cfg.DATASETS.ROOT_TRAIN_DIR, transform=train_transforms)
+    source_test_dataset = CustomImageDataset(root=cfg.DATASETS.ROOT_TEST_DIR, transform=train_transforms)
+    target_train_dataset = CustomImageDataset(root=cfg.DATASETS.ROOT_TRAIN_DIR2, transform=train_transforms)
+    target_test_dataset = CustomImageDataset(root=cfg.DATASETS.ROOT_TEST_DIR2, transform=train_transforms)
+
 
     source_train_loader = DataLoader(source_train_dataset, batch_size=64, shuffle=True, num_workers=4, pin_memory=True)
     source_test_loader = DataLoader(source_test_dataset, batch_size=64, shuffle=True, num_workers=4, pin_memory=True)
@@ -149,7 +142,8 @@ def main():
     target_test_loader = DataLoader(target_test_dataset, batch_size=64, shuffle=True, num_workers=4, pin_memory=True)
 
     #load model
-    model = make_model(cfg, num_class=2, camera_num=0, view_num = 0)
+    # model = make_model(cfg, num_class=2, camera_num=0, view_num = 0)
+    model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet50', pretrained=True)
     model = model.to(device)
 
     #load optimizer
