@@ -20,20 +20,18 @@ def train_epoch(model, source_loader, taget_loader, optimizer, criterion, device
 
     for i in range(iters):
 
-        source_data, source_label, _ = source_iter.next()
-        target_data, target_label, _ = target_iter.next()
+        (source_data, source_label), _ = source_iter.next()
+        (target_data, target_label), _ = target_iter.next()
 
-        source_data, source_label = source_data.to(device), source_label.to(device)
-        target_data, target_label = target_data.to(device), target_label.to(device)
+        source_data= source_data.to(device)
+        target_data = target_data.to(device)
+        total_data = torch.cat([source_data, target_data], dim=0)
 
         source_domain_label = torch.zeros(source_data.shape[0]).long().to(device)
         target_domain_label = torch.ones(target_data.shape[0]).long().to(device)
-
-        source_domain_pred = model(source_data)
-        target_domain_pred = model(target_data)
-
-        total_pred = torch.cat([source_domain_pred, target_domain_pred], dim=0)
         total_label = torch.cat([source_domain_label, target_domain_label], dim=0)
+
+        total_pred = model(total_data)
 
         loss = criterion(total_pred, total_label)
         losses.update(loss.item(), source_data.size(0))
@@ -62,8 +60,8 @@ def validate(model, source_loader, taget_loader, criterion, device):
     with torch.no_grad():
         for i in range(iters):
 
-            source_data, source_label, source_img_path = source_iter.next()
-            target_data, target_label, target_img_path = target_iter.next()
+            (source_data, source_label), source_img_path = source_iter.next()
+            (target_data, target_label), target_img_path = target_iter.next()
 
             source_data = source_data.to(device)
             target_data = target_data.to(device)
@@ -77,7 +75,7 @@ def validate(model, source_loader, taget_loader, criterion, device):
             # target_domain_pred = model(target_data)
             total_pred_conf = model(total_data)
             total_pred =  torch.argmax(total_pred_conf, dim=1)
-            accuracy.update(torch.sum(total_pred == total_label).item(), total_label.shape[0])
+            accuracy.update(torch.mean(total_pred == total_label).item(), total_label.shape[0])
 
             # total_pred_conf = torch.cat([source_domain_pred, target_domain_pred], dim=0)
             
@@ -93,7 +91,7 @@ def infer_target(model, target_loader, device, split='train'):
     target_iter = iter(target_loader)
     total_pred_all, total_pred_conf_all, image_paths, labels = [], [], [], []
     for i in range(iters):
-        target_data, target_label, target_img_path = target_iter.next()
+        (target_data, target_label), target_img_path = target_iter.next()
         target_data, target_label = target_data.to(device), target_label.to(device)
 
         # target_domain_label = torch.ones(target_data.shape[0]).long().to(device)
@@ -122,6 +120,7 @@ def main():
     cfg.merge_from_file('/home/rufael.marew/Documents/Academics/AI702/project/Transformers_for_Domain_adaptation/configs/train_disc.yaml')
     #set device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    batch_size = 128
 
     train_transforms = transforms.Compose([
         transforms.Resize(256),
@@ -130,18 +129,21 @@ def main():
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
 
+    print('Loading Data...')
+
     source_train_dataset = CustomImageDataset(root=cfg.DATASETS.ROOT_TRAIN_DIR, transform=train_transforms)
     source_test_dataset = CustomImageDataset(root=cfg.DATASETS.ROOT_TEST_DIR, transform=train_transforms)
     target_train_dataset = CustomImageDataset(root=cfg.DATASETS.ROOT_TRAIN_DIR2, transform=train_transforms)
     target_test_dataset = CustomImageDataset(root=cfg.DATASETS.ROOT_TEST_DIR2, transform=train_transforms)
 
 
-    source_train_loader = DataLoader(source_train_dataset, batch_size=64, shuffle=True, num_workers=4, pin_memory=True)
-    source_test_loader = DataLoader(source_test_dataset, batch_size=64, shuffle=True, num_workers=4, pin_memory=True)
-    target_train_loader = DataLoader(target_train_dataset, batch_size=64, shuffle=True, num_workers=4, pin_memory=True)
-    target_test_loader = DataLoader(target_test_dataset, batch_size=64, shuffle=True, num_workers=4, pin_memory=True)
+    source_train_loader = DataLoader(source_train_dataset, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
+    source_test_loader = DataLoader(source_test_dataset, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
+    target_train_loader = DataLoader(target_train_dataset, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
+    target_test_loader = DataLoader(target_test_dataset, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
 
     #load model
+    print('loading model')
     # model = make_model(cfg, num_class=2, camera_num=0, view_num = 0)
     model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet50', pretrained=False)
 
@@ -156,13 +158,15 @@ def main():
     criterion = torch.nn.CrossEntropyLoss()
 
     #train
-    train(model, source_train_loader, target_train_loader, optimizer, criterion, device, epochs=100, print_freq=1000)
+    print('start training')
+    train(model, source_train_loader, target_train_loader, optimizer, criterion, device, epochs=5, print_freq=100)
 
     #validate
     loss, pred = validate(model, source_test_loader, target_test_loader, criterion, device)
     print(f'Validation Loss {loss:.4f}\t validation Accuracy {pred:.4f}\t')
 
     #run infernce on target dataset
+    print('running infernce on target set')
     infer_target(model, target_train_loader, device, split='train')
     infer_target(model, target_test_loader, device, split='test')
 
