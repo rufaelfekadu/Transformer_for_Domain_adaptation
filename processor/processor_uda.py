@@ -687,16 +687,19 @@ def do_inference_uda(cfg,
         if cfg.MODEL.TASK_TYPE == 'classify_DA':
             accuracy, mean_ent = evaluator.compute()  
             logger.info("Classify Domain Adapatation Validation Results - In the source trained model")
-            logger.info("Accuracy: {:.1%}".format(accuracy))
+            logger.info("Total Accuracy: {:.1%}".format(accuracy))
             logger.info("f1_score: {:.1%}".format(f1/len(val_loader)))
+            avg_acc = 0
             for i in range(3):
                 if class_total[i] > 0:
                     logger.info('Accuracy of class %d: %2d%% (%2d/%2d)' % (
                         i, 100 * class_correct[i] / class_total[i],
                         class_correct[i], class_total[i]))
+                    avg_acc += 100 * class_correct[i] / class_total[i]
                 else:
                     print('Accuracy of class %d: N/A (no examples in class)' % (i))
             # print(pred_counts)
+            logger.info('Average accuracy: {}'.format(avg_acc/len(class_total)))
             logger.info('prediction counts for exach class:{} '.format(pred_counts))
             return 
         else:

@@ -258,13 +258,16 @@ def do_inference(cfg,
             logger.info("Classify Domain Adapatation Validation Results - In the source trained model")
             logger.info("Accuracy: {:.1%}".format(accuracy))
             logger.info("f1_score: {:.1%}".format(f1/len(val_loader)))
-            for i in range(3):
+            avg_acc = 0
+            for i in range(len(class_total)):
                 if class_total[i] > 0:
                     logger.info('Accuracy of class %d: %2d%% (%2d/%2d)' % (
                         i, 100 * class_correct[i] / class_total[i],
                         class_correct[i], class_total[i]))
+                    avg_acc += (class_correct[i] / class_total[i])*100
                 else:
                     print('Accuracy of class %d: N/A (no examples in class)' % (i))
+            logger.info('Average accuracy: {:.1%}'.format(avg_acc/len(class_total)))
             logger.info('prediction counts for exach class:{} '.format(pred_counts))
             return 
         else:
